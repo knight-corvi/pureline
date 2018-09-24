@@ -70,18 +70,24 @@ function time_module {
 #   PL_USER_USE_IP: true/false to show IP instead of hostname
 function user_module {
     local bg_color="$1"
-    local fg_color="$2"
-    local content="\u"
+    local fg_color="$1"
+    local user_color="$2"
+    local at_color="$3"
+    local host_color="$4"
+    local user="\u"
+    local at="@"
+    local host=""
     # Show host if true or when user is remote/root
     if [ "$PL_USER_SHOW_HOST" = true ]; then
+        host="\h"
         if [ "$PL_USER_USE_IP" = true ]; then
-            content+="@$(ip_address)"
-        else
-            content+="@\h"
+            host+="$(ip_address)"
         fi
     fi
     PS1+="$(section_end $fg_color $bg_color)"
-    PS1+="$(section_content $fg_color $bg_color " $content ")"
+    PS1+="$(section_content $user_color $bg_color "$user")"
+    PS1+="$(section_content $at_color $bg_color "$at")"
+    PS1+="$(section_content $host_color $bg_color "$host")"
     __last_color="$bg_color"
 }
 
